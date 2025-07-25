@@ -54,7 +54,7 @@ go test ./...
 ```
 
 ## CI/CD
-- On every push to `main`, GitHub Actions will:
+- On every push to `master`, GitHub Actions will:
   - Run tests
   - Build Docker image
   - Deploy using Docker Compose on a self-hosted runner
