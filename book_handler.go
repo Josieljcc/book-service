@@ -14,9 +14,12 @@ type BookResponse struct {
 }
 
 type GoogleBooksVolumeInfo struct {
-	Title       string   `json:"title"`
-	Authors     []string `json:"authors"`
-	Description string   `json:"description"`
+	Title         string   `json:"title"`
+	Authors       []string `json:"authors"`
+	Publisher     string   `json:"publisher"`
+	PublishedDate string   `json:"publishedDate"`
+	Categories    []string `json:"categories"`
+	Description   string   `json:"description"`
 }
 
 type GoogleBooksResponse struct {
@@ -26,9 +29,12 @@ type GoogleBooksResponse struct {
 }
 
 type BookData struct {
-	Title       string   `json:"title"`
-	Authors     []string `json:"authors"`
-	Description string   `json:"description"`
+	Title         string `json:"title"`
+	Authors       string `json:"authors"`
+	Publisher     string `json:"publisher"`
+	PublishedYear string `json:"publishedYear"`
+	Categories    string `json:"categories"`
+	Description   string `json:"description"`
 }
 
 func BookHandler(w http.ResponseWriter, r *http.Request) {
@@ -65,7 +71,22 @@ func BookHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	info := gbResp.Items[0].VolumeInfo
-	book := BookData(info)
+
+	authors := strings.Join(info.Authors, ", ")
+	categories := strings.Join(info.Categories, ", ")
+	publishedYear := ""
+	if len(info.PublishedDate) >= 4 {
+		publishedYear = info.PublishedDate[:4]
+	}
+
+	book := BookData{
+		Title:         info.Title,
+		Authors:       authors,
+		Publisher:     info.Publisher,
+		PublishedYear: publishedYear,
+		Categories:    categories,
+		Description:   info.Description,
+	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(book)
 }
