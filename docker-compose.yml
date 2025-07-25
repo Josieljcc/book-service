@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  bookservice:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - GOOGLE_BOOKS_API_KEY=${GOOGLE_BOOKS_API_KEY}
+    # Para produção, use secrets ou env_file para a chave
+    # env_file:
+    #   - .env
+    # secrets:
+    #   - google_books_api_key
+# secrets:
+#   google_books_api_key:
+#     external: true 

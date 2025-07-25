@@ -1,0 +1,35 @@
+name: Deploy Book Service
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Build Docker image
+        run: docker build -t bookservice:latest .
+
+      - name: Stop and remove old container (if running)
+        run: |
+          docker stop bookservice || true
+          docker rm bookservice || true
+
+      - name: Run Docker Compose (with secret)
+        run: |
+          docker-compose up -d --build
+        env:
+          GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
