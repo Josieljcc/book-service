@@ -15,13 +15,13 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.21"
+          go-version: "1.23"
 
       - name: Run tests
         run: go test ./...
 
       - name: Build Docker image
-        run: docker build -t bookservice:latest .
+        run: docker build -t bookservice .
 
       - name: Stop and remove old container (if running)
         run: |
@@ -30,6 +30,6 @@ jobs:
 
       - name: Run Docker Compose (with secret)
         run: |
-          docker-compose up -d --build
+          docker compose up -d --build
         env:
           GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
