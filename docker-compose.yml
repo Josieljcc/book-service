@@ -6,3 +6,8 @@ services:
       - "8081:8081"
     environment:
       - GOOGLE_BOOKS_API_KEY=${GOOGLE_BOOKS_API_KEY}
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token eyJhIjoiOTZiNGY0ODU5NGU5NDgyYmFhZjBjZGY0ODJiZGY4MzMiLCJ0IjoiYTZhZjc5ZDQtOThjYi00ZmY2LThhNzUtN2M1ZGI5MmRlZjQxIiwicyI6Ik1EUTVOakUwTlRZdFlqWTFZeTAwT1dVMkxXRTVORFV0WXpabU5XSmlZMkkzWW1ObCJ9
+    restart: unless-stopped
